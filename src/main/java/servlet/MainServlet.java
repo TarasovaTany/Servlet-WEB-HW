@@ -10,29 +10,33 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class MainServlet extends HttpServlet {
-    public static final String API_POSTS = "/api/posts";
-    public static final String API_POSTS_D = "/api/posts/\\d+";
-    public static final String STR = "/";
+    private static final String API_POSTS = "/api/posts";
+    private static final String API_POSTS_D = "/api/posts/\\d+";
+    private static final String STR = "/";
+    private PostRepository repository;
     private PostController controller;
+    private PostService service;
+    private String path;
+    private String method;
 
     @Override
     public void init() {
-        final var repository = new PostRepository();
-        final var service = new PostService(repository);
+        repository = new PostRepository();
+        service = new PostService(repository);
         controller = new PostController(service);
     }
 
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) {
         try {
-            final var path = req.getRequestURI();
-            final var method = req.getMethod();
+            path = req.getRequestURI();
+            method = req.getMethod();
             if (method.equals("GET") && path.equals(API_POSTS)) {
                 controller.all(resp);
                 return;
             }
             if (method.equals("GET") && path.matches(API_POSTS_D)) {
-                final var id = parseId(path);
+                final long id = parseId(path);
                 controller.getById(id, resp);
                 return;
             }
@@ -41,7 +45,7 @@ public class MainServlet extends HttpServlet {
                 return;
             }
             if (method.equals("DELETE") && path.matches(API_POSTS_D)) {
-                final var id = parseId(path);
+                final long id = parseId(path);
                 controller.removeById(id, resp);
                 return;
             }
