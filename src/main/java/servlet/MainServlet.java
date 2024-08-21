@@ -2,8 +2,7 @@ package servlet;
 
 import controller.PostController;
 import exception.NotFoundException;
-import repository.PostRepository;
-import service.PostService;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -13,17 +12,14 @@ public class MainServlet extends HttpServlet {
     private static final String API_POSTS = "/api/posts";
     private static final String API_POSTS_D = "/api/posts/\\d+";
     private static final String STR = "/";
-    private PostRepository repository;
     private PostController controller;
-    private PostService service;
     private String path;
     private String method;
 
     @Override
     public void init() {
-        repository = new PostRepository();
-        service = new PostService(repository);
-        controller = new PostController(service);
+        final var context = new AnnotationConfigApplicationContext();
+        controller = context.getBean(PostController.class);
     }
 
     @Override
