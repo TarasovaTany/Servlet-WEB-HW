@@ -37,13 +37,12 @@ public class PostController {
     public void save(Reader body, HttpServletResponse response) throws IOException {
         response.setContentType(APPLICATION_JSON);
         post = gson.fromJson(body, Post.class);
-        data = (List<Post>) service.save(post);
-        response.getWriter().print(gson.toJson(data));
+        post = service.save(post);
+        response.getWriter().print(gson.toJson(post));
     }
 
     public void removeById(long id, HttpServletResponse response) throws IOException {
         response.setContentType(APPLICATION_JSON);
-        data = (List<Post>) service.getById(id);
         service.removeById(id);
         response.getWriter().print(gson.toJson(data));
     }

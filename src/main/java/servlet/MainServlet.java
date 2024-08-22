@@ -13,6 +13,9 @@ public class MainServlet extends HttpServlet {
     private static final String API_POSTS = "/api/posts";
     private static final String API_POSTS_D = "/api/posts/\\d+";
     private static final String STR = "/";
+    private final String GET_METHOD = "GET";
+    private final String POST_METHOD = "POST";
+    private final String DELETE_METHOD = "DELETE";
     private PostRepository repository;
     private PostController controller;
     private PostService service;
@@ -31,20 +34,20 @@ public class MainServlet extends HttpServlet {
         try {
             path = req.getRequestURI();
             method = req.getMethod();
-            if (method.equals("GET") && path.equals(API_POSTS)) {
+            if (method.equals(GET_METHOD) && path.equals(API_POSTS)) {
                 controller.all(resp);
                 return;
             }
-            if (method.equals("GET") && path.matches(API_POSTS_D)) {
+            if (method.equals(GET_METHOD) && path.matches(API_POSTS_D)) {
                 final long id = parseId(path);
                 controller.getById(id, resp);
                 return;
             }
-            if (method.equals("POST") && path.equals(API_POSTS)) {
+            if (method.equals(POST_METHOD) && path.equals(API_POSTS)) {
                 controller.save(req.getReader(), resp);
                 return;
             }
-            if (method.equals("DELETE") && path.matches(API_POSTS_D)) {
+            if (method.equals(DELETE_METHOD) && path.matches(API_POSTS_D)) {
                 final long id = parseId(path);
                 controller.removeById(id, resp);
                 return;
