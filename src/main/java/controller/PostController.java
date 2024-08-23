@@ -3,8 +3,6 @@ package controller;
 import com.google.gson.Gson;
 import exception.NotFoundException;
 import model.Post;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import service.PostService;
 
 import javax.servlet.http.HttpServletResponse;
@@ -12,14 +10,11 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.List;
 
-@Controller
 public class PostController {
     public static final String APPLICATION_JSON = "application/json";
     private final Gson gson = new Gson();
     private List<Post> data;
     private Post post;
-
-    @Autowired
     private final PostService service;
 
     public PostController(PostService service) {
