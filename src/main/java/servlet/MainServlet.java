@@ -1,9 +1,9 @@
 package servlet;
 
+import config.AppConfig;
 import controller.PostController;
 import exception.NotFoundException;
-import repository.PostRepository;
-import service.PostService;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -16,17 +16,14 @@ public class MainServlet extends HttpServlet {
     private final String GET_METHOD = "GET";
     private final String POST_METHOD = "POST";
     private final String DELETE_METHOD = "DELETE";
-    private PostRepository repository;
     private PostController controller;
-    private PostService service;
     private String path;
     private String method;
 
     @Override
     public void init() {
-        repository = new PostRepository();
-        service = new PostService(repository);
-        controller = new PostController(service);
+        final var context = new AnnotationConfigApplicationContext(AppConfig.class);
+        controller = context.getBean(PostController.class);
     }
 
     @Override

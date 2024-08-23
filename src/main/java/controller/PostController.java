@@ -12,14 +12,13 @@ import java.util.List;
 
 public class PostController {
     public static final String APPLICATION_JSON = "application/json";
-    private final PostService service;
-    private final Gson gson;
+    private final Gson gson = new Gson();
     private List<Post> data;
     private Post post;
+    private final PostService service;
 
     public PostController(PostService service) {
         this.service = service;
-        gson = new Gson();
     }
 
     public void all(HttpServletResponse response) throws IOException {
